@@ -38,24 +38,10 @@
     * Низкая кардинальность.
 4. **purchase_items**
     * Ограничение на product_price. Поле не должно быть меньше 0:
-       > CREATE TABLE purchase_items (
-       > purchase_id BIGINT UNSIGNED NOT NULL,
-       > product_id BIGINT UNSIGNED NOT NULL,
-       > product_count BIGINT UNSIGNED NOT NULL,
-       > product_price NUMERIC(9,2) NOT NULL **CHECK (product_price > 0)**,
-       > CONSTRAINT PK_PURCHASE_ITEMS PRIMARY KEY (purchase_id, product_id),  
-       > FOREIGN KEY (product_id) REFERENCES products (product_id),
-       > FOREIGN KEY (purchase_id) REFERENCES purchases (purchase_id)
-       > );
+       > product_price INT NOT NULL **CHECK (product_price > 0)**
 5. **price_change**
     * Ограничение на new_price. Поле не должно быть меньше 0:
-       > CREATE TABLE price_change (
-       > product_id BIGINT UNSIGNED NOT NULL,
-       > date_price_change DATE NOT NULL,
-       > new_price NUMERIC(9,2) NOT NULL **CHECK (new_price > 0)**,      
-       > CONSTRAINT PK_PRICE_CHANGE PRIMARY KEY (product_id, date_price_change),  
-       > FOREIGN KEY (product_id) REFERENCES products (product_id)   
-       > );
+       > new_price INT NOT NULL **CHECK (new_price > 0)**
 
 
 
