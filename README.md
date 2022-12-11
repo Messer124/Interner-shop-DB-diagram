@@ -26,20 +26,36 @@
 ## ДЗ 2. Индексы и ограничения
 1. **deliveries**
     * При поиске связки delivery_date и  product_id, можно добавить индекс на поле delivery_date:
-    > CREATE INDEX idx_ deliveries_ deliveryDate ON deliveries(delivery_date);
+      > CREATE INDEX idx_ deliveries_ deliveryDate ON deliveries(delivery_date);
     * У поля product_count высокая кардинальность.
 2. **purchases**
     * При поиске связки purchase_date + purchase_id, можно добавить индекс на поле purchase_date:
-    > CREATE INDEX idx_purchases_purchaseDate ON purchases(purchase_date);
+      > CREATE INDEX idx_purchases_purchaseDate ON purchases(purchase_date);
     * У поля purchase_id высокая кардинальность.
 3. **customers**
     * Для быстрого поиска уникальных имен и фамилий, можно добавить составной индекс:
     > CREATE INDEX idx_customers_name_lastname ON customers(customer_fname, customer_lname);
     * Низкая кардинальность.
 4. **purchase_items**
-    * Ограничение на product_price не должно быть меньше 0
+    * Ограничение на product_price. Поле не должно быть меньше 0:
+       > CREATE TABLE purchase_items (
+       > purchase_id BIGINT UNSIGNED NOT NULL,
+       > product_id BIGINT UNSIGNED NOT NULL,
+       > product_count BIGINT UNSIGNED NOT NULL,
+       > product_price NUMERIC(9,2) NOT NULL **CHECK (product_price > 0)**,
+       > CONSTRAINT PK_PURCHASE_ITEMS PRIMARY KEY (purchase_id, product_id),  
+       > FOREIGN KEY (product_id) REFERENCES products (product_id),
+       > FOREIGN KEY (purchase_id) REFERENCES purchases (purchase_id)
+       > );
 5. **price_change**
-    * Ограничение на new_price не должно быть меньше 0
+    * Ограничение на new_price. Поле не должно быть меньше 0:
+       > CREATE TABLE price_change (
+       > product_id BIGINT UNSIGNED NOT NULL,
+       > date_price_change DATE NOT NULL,
+       > new_price NUMERIC(9,2) NOT NULL **CHECK (new_price > 0)**,      
+       > CONSTRAINT PK_PRICE_CHANGE PRIMARY KEY (product_id, date_price_change),  
+       > FOREIGN KEY (product_id) REFERENCES products (product_id)   
+       > );
 
 
 
